@@ -56,7 +56,12 @@ async function run() {
         res.send(result);
       });
 
-      
+      app.get("/cart", async (req, res) => {
+        const result = await userCollection2.find().toArray();
+        console.log(result);
+        res.send(result);
+
+      });git add .
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
