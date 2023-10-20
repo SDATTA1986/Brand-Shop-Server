@@ -47,6 +47,33 @@ async function run() {
 
       });
 
+      app.get("/users/:id", async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result=await userCollection.findOne(query);
+        res.send(result);
+      })
+
+      app.put("/users/:id",async(req,res)=>{
+        const id=req.params.id;
+        const filter={_id:new ObjectId(id)}
+        const options={upsert:true};
+        const updatedProduct=req.body;
+        const product={
+          $set:{
+            name:updatedProduct.name,
+            image:updatedProduct.image,
+            state:updatedProduct.state,
+            price:updatedProduct.price,
+            rating:updatedProduct.rating,
+            description:updatedProduct.description,
+            type:updatedProduct.type
+          }
+        }
+        const result=await userCollection.updateOne(filter,product,options);
+        res.send(result);
+      })
+
       const userCollection2=client.db("userDB").collection("cart");
       app.post("/cart", async (req, res) => {
         const user = req.body;
